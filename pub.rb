@@ -9,7 +9,7 @@ class Pub
   end
 
   def take_drink_from_stock(drink)
-    return @drinks.delete(drink)
+    return @drinks[drink]-= 1
   end
 
   def add_money_to_till(drink)
@@ -22,6 +22,10 @@ class Pub
 
   def take_food_from_pub(food)
     return @food.delete(food)
+  end
+
+  def check_drink_stock(drink)
+    return @drinks[drink]
   end
 
 end

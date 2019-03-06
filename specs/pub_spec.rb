@@ -17,7 +17,7 @@ class PubTest < MiniTest::Test
     @drink2 = Drink.new('Corona', 3, 3)
     @drink3 = Drink.new('Tenants', 4, 5)
     @drink4 = Drink.new('Nice Ale', 5, 8)
-    @drinks = [@drink1,@drink2,@drink3,@drink4]
+    @drinks = { @drink1 => 3, @drink2 => 2, @drink3=>1, @drink4=>5 }
     @pub = Pub.new('The Stables', 50, @drinks)
     @customer1 = Customer.new('Sally', 15, 17)
   end
@@ -36,7 +36,7 @@ class PubTest < MiniTest::Test
 
   def test_take_drink_from_pub
     result = @pub.take_drink_from_stock(@drink3)
-    assert_equal(@drink3, result)
+    assert_equal(0, result)
   end
 
   def test_add_money_to_till
@@ -58,6 +58,11 @@ class PubTest < MiniTest::Test
     @pub.add_food_to_pub(@food)
     result = @pub.take_food_from_pub(@food2)
     assert_equal(@food2, result)
+  end
+
+  def test_check_drink_stock
+    result = @pub.check_drink_stock(@drink4)
+    assert_equal(5, result)
   end
 
 end
