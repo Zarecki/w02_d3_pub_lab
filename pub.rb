@@ -10,4 +10,8 @@ class Pub
     return @drinks.delete(drink)
   end
 
+  def add_money_to_till(drink)
+     @till += drink.price
+  end 
+
 end
