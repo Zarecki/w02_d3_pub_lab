@@ -65,4 +65,9 @@ class PubTest < MiniTest::Test
     assert_equal(5, result)
   end
 
+  def test_drink_stock_amount
+    result = @pub.drink_stock_amount
+    assert_equal(11, result)
+  end
+
 end

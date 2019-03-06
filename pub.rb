@@ -28,4 +28,14 @@ class Pub
     return @drinks[drink]
   end
 
+  def drink_stock_amount
+    count = 0
+    # @drinks.each {|key,value| count += value}
+    for key,value in @drinks
+      count += value
+    end
+
+    return count
+  end
+
 end
