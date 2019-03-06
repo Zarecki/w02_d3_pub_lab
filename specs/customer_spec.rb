@@ -4,9 +4,14 @@ require("minitest/rg")
 require_relative("../customer")
 require_relative("../pub")
 require_relative("../drink")
+require_relative("../food")
 
 class CustomerTest < MiniTest::Test
   def setup
+    @food1 = Food.new('Hot Dog', 5, 4)
+    @food2 = Food.new('Burger', 12, 6)
+    @food3 = Food.new('Nachos', 4, 3)
+    @food = [@food1,@food2,@food3]
     @drink1 = Drink.new('Dead Pony Club', 6, 7)
     @drink2 = Drink.new('Corona', 3, 3)
     @drink3 = Drink.new('Tenants', 4, 5)
@@ -36,7 +41,7 @@ class CustomerTest < MiniTest::Test
     assert_equal(4, @pub.drinks.count)
     assert_equal(50, @pub.till)
     assert_equal(15, @customer1.wallet)
-    assert_equal("You are underage", result)
+    assert_equal("Service Refused!", result)
   end
 
   def test_buy_drink__of_age_under_alcohol_limit
@@ -49,12 +54,13 @@ class CustomerTest < MiniTest::Test
   end
 
   def test_buy_drink__of_age_over_alcohol_limit
-    @customer3.buy_drink(@drink2, @pub)
+    result = @customer3.buy_drink(@drink2, @pub)
     assert_equal(4, @pub.drinks.count)
     assert_equal(50, @pub.till)
     assert_equal(10, @customer3.wallet)
     assert_equal(21, @customer3.drunkness)
     assert_equal(false, @customer3.customer_is_under_alcohol_limit?)
+    assert_equal("Service Refused!",result)
   end
 
   def test_get_customer_age
@@ -75,9 +81,14 @@ class CustomerTest < MiniTest::Test
     assert_equal(0, @customer2.drunkness)
   end
 
-  def test_change_customer_drunkness__increase
-    result = @customer2.change_customer_drunkness(@drink2)
+  def test_change_customer_drunkness__drink_increase
+    result = @customer2.change_customer_drunkness_drink(@drink2)
     assert_equal(3, result)
+  end
+
+  def test_change_customer_drunkness__food_decrease
+    result = @customer3.change_customer_drunkness_food(@food1)
+    assert_equal(17, result)
   end
 
   def test_customer_is_under_alcohol_limit__false
@@ -90,5 +101,13 @@ class CustomerTest < MiniTest::Test
     assert_equal(true, result)
   end
 
+  def test_buy_food
+    @pub.add_food_to_pub(@food)
+    result = @customer3.buy_food(@food3, @pub)
+    assert_equal(2, @pub.food.count)
+    assert_equal(54, @pub.till)
+    assert_equal(6, @customer3.wallet)
+    assert_equal(18, @customer3.drunkness)
+  end
 
 end
